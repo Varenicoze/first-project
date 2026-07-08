@@ -9,7 +9,7 @@ namespace Project.Game
 
         private void Awake()
         {
-            _imageBG.color = colorItem
+          _imageBG.color = _colorItems[Random.Range(0, _colorItems.Length - 1)].Color;
         }
     }
 }

@@ -1,3 +1,4 @@
+using _Project.Code;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,31 +7,34 @@ namespace Project.Game
 {
     public class ClickerController : MonoBehaviour
     {
+        [SerializeField] private Observer _observer;
         [SerializeField] private TMP_Text _textScore;
-        [SerializeField] private Button _button;
-        [SerializeField] private int _score = 30;
+        [SerializeField] private Button _buttonClicker;
     
-        private int _scoreValue;
+        private BankService _bankService;
+        private object _scoreValue;
+        private string _score;
 
         private void Awake()
         {
+            _bankService = _observer.GetBank();
             UpdateTextScore();
-            _button.onClick.AddListener(UpdateScore);
+            _buttonClicker.onClick.AddListener(UpdateScore);
         }
 
         private void OnDestroy()
         {
-            _button.onClick.RemoveListener(UpdateScore);
+            _buttonClicker.onClick.RemoveListener(UpdateScore);
         }
 
         private void UpdateScore()
         {
-            _scoreValue += _score;
+            _observer.GetBank().SetScore();
             UpdateTextScore();
         }
         private void UpdateTextScore()
         {
-            _textScore.SetText($"${_scoreValue.ToString()}");
+            _textScore.SetText($"${_bankService.GetScore().ToString()}");
         }
     }
 }
